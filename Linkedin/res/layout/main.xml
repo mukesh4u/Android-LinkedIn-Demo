@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/blue_bg_rect"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_gradient_header"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="false"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/logo"
+            android:padding="4dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Linkedin"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:typeface="sans" >
+        </TextView>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:padding="15dp"
+        android:text="Name"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/et_share"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/linkedin_share"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/btn_active_pressed"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="8dp"
+        android:text="Login"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignRight="@+id/et_share"
+        android:layout_alignTop="@+id/name"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/photo"
+        android:padding="5dp"
+        android:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/et_share"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignBottom="@+id/login"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:gravity="top|center_vertical"
+        android:hint="Enter Your Text to Share"
+        android:visibility="invisible" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>
