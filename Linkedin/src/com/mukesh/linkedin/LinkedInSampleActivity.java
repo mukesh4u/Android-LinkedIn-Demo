@@ -34,9 +34,8 @@ public class LinkedInSampleActivity extends Activity {
 	public static final String OAUTH_CALLBACK_HOST = "litestcalback";
 
 	final LinkedInOAuthService oAuthService = LinkedInOAuthServiceFactory
-			.getInstance().createLinkedInOAuthService(
-					Config.LINKEDIN_CONSUMER_KEY,
-					Config.LINKEDIN_CONSUMER_SECRET);
+            .getInstance().createLinkedInOAuthService(
+                    Config.LINKEDIN_CONSUMER_KEY,Config.LINKEDIN_CONSUMER_SECRET, Config.scopeParams);
 	final LinkedInApiClientFactory factory = LinkedInApiClientFactory
 			.newInstance(Config.LINKEDIN_CONSUMER_KEY,
 					Config.LINKEDIN_CONSUMER_SECRET);
