@@ -1,8 +1,26 @@
 package com.mukesh.linkedin;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
+import oauth.signpost.exception.OAuthCommunicationException;
+import oauth.signpost.exception.OAuthExpectationFailedException;
+import oauth.signpost.exception.OAuthMessageSignerException;
+
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,11 +61,17 @@ public class LinkedInSampleActivity extends Activity {
 	LinkedInApiClient client;
 	LinkedInAccessToken accessToken = null;
 
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
+		
+		if( Build.VERSION.SDK_INT >= 9){
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy); 
+		}
 		share = (Button) findViewById(R.id.share);
 		name = (TextView) findViewById(R.id.name);
 		et = (EditText) findViewById(R.id.et_share);
@@ -68,6 +92,47 @@ public class LinkedInSampleActivity extends Activity {
 			public void onClick(View v) {
 				String share = et.getText().toString();
 				if (null != share && !share.equalsIgnoreCase("")) {
+					OAuthConsumer consumer = new CommonsHttpOAuthConsumer(Config.LINKEDIN_CONSUMER_KEY, Config.LINKEDIN_CONSUMER_SECRET);
+				    consumer.setTokenWithSecret(accessToken.getToken(), accessToken.getTokenSecret());
+					DefaultHttpClient httpclient = new DefaultHttpClient();
+					HttpPost post = new HttpPost("https://api.linkedin.com/v1/people/~/shares");
+					try {
+						consumer.sign(post);
+					} catch (OAuthMessageSignerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (OAuthExpectationFailedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (OAuthCommunicationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} // here need the consumer for sign in for post the share
+					post.setHeader("content-type", "text/XML");
+					String myEntity = "<share><comment>"+ share +"</comment><visibility><code>anyone</code></visibility></share>";
+					try {
+						post.setEntity(new StringEntity(myEntity));
+						org.apache.http.HttpResponse response = httpclient.execute(post);
+						Toast.makeText(LinkedInSampleActivity.this,
+								"Shared sucessfully", Toast.LENGTH_SHORT).show();
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else {
+					Toast.makeText(LinkedInSampleActivity.this,
+							"Please enter the text to share",
+							Toast.LENGTH_SHORT).show();
+				}
+				
+				/*String share = et.getText().toString();
+				if (null != share && !share.equalsIgnoreCase("")) {
 					client = factory.createLinkedInApiClient(accessToken);
 					client.postNetworkUpdate(share);
 					et.setText("");
@@ -77,7 +142,7 @@ public class LinkedInSampleActivity extends Activity {
 					Toast.makeText(LinkedInSampleActivity.this,
 							"Please enter the text to share",
 							Toast.LENGTH_SHORT).show();
-				}
+				}*/
 			}
 		});
 	}
@@ -128,3 +193,4 @@ public class LinkedInSampleActivity extends Activity {
 		progressDialog.show();
 	}
 }
+
