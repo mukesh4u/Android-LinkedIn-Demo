@@ -6,4 +6,6 @@ android LinkedIn integration . Note: Replace your LINKEDIN_CONSUMER_KEY and LINK
 
 ![alt tag](http://1.bp.blogspot.com/-3ZsnvIujo54/UZSxKeo6PBI/AAAAAAAAAw0/GLKBf523aaI/s1600/linkedin+login.jpg)
 
-![alt tag](http://1.bp.blogspot.com/-4ACcGbn-s-4/UZSxKS1aLCI/AAAAAAAAAws/Ac1ZXnEyEaM/s1600/Linkedin+_share.jpg)
+![alt tag](http://1.bp.blogspot.com/-4ACcGbn-s-4/UZSxKS1aLCI/AAAAAAAAAws/Ac1ZXnEyEaM/s1600/Linkedin+_share.jpg).
+
+![alt tag](https://3.bp.blogspot.com/-QmoMHqMhZe4/VXmCY3pEP0I/AAAAAAAABmg/b2SuuIyo4dM/s400/linkedin.png)

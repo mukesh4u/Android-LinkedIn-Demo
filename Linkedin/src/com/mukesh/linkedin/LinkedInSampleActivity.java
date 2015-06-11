@@ -2,6 +2,7 @@ package com.mukesh.linkedin;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.EnumSet;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
@@ -33,12 +34,14 @@ import android.widget.Toast;
 import com.example.linkedin.R;
 import com.google.code.linkedinapi.client.LinkedInApiClient;
 import com.google.code.linkedinapi.client.LinkedInApiClientFactory;
+import com.google.code.linkedinapi.client.enumeration.ProfileField;
 import com.google.code.linkedinapi.client.oauth.LinkedInAccessToken;
 import com.google.code.linkedinapi.client.oauth.LinkedInOAuthService;
 import com.google.code.linkedinapi.client.oauth.LinkedInOAuthServiceFactory;
 import com.google.code.linkedinapi.client.oauth.LinkedInRequestToken;
 import com.google.code.linkedinapi.schema.Person;
 import com.mukesh.linkedin.LinkedinDialog.OnVerifyListener;
+import com.squareup.picasso.Picasso;
 
 /**
  * @author Mukesh Kumar Yadav
@@ -47,13 +50,13 @@ public class LinkedInSampleActivity extends Activity {
 	Button login;
 	Button share;
 	EditText et;
-	TextView name;
+	TextView name,profile;
 	ImageView photo;
 	public static final String OAUTH_CALLBACK_HOST = "litestcalback";
 
 	final LinkedInOAuthService oAuthService = LinkedInOAuthServiceFactory
             .getInstance().createLinkedInOAuthService(
-                    Config.LINKEDIN_CONSUMER_KEY,Config.LINKEDIN_CONSUMER_SECRET, Config.scopeParams);
+                    Config.LINKEDIN_CONSUMER_KEY,Config.LINKEDIN_CONSUMER_SECRET);
 	final LinkedInApiClientFactory factory = LinkedInApiClientFactory
 			.newInstance(Config.LINKEDIN_CONSUMER_KEY,
 					Config.LINKEDIN_CONSUMER_SECRET);
@@ -74,12 +77,12 @@ public class LinkedInSampleActivity extends Activity {
 		}
 		share = (Button) findViewById(R.id.share);
 		name = (TextView) findViewById(R.id.name);
+		profile = (TextView) findViewById(R.id.profile);
 		et = (EditText) findViewById(R.id.et_share);
 		login = (Button) findViewById(R.id.login);
 		photo = (ImageView) findViewById(R.id.photo);
 
 		login.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				linkedInLogin();
 			}
@@ -88,7 +91,6 @@ public class LinkedInSampleActivity extends Activity {
 		// share on linkedin
 		share.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				String share = et.getText().toString();
 				if (null != share && !share.equalsIgnoreCase("")) {
@@ -157,7 +159,7 @@ public class LinkedInSampleActivity extends Activity {
 
 		// set call back listener to get oauth_verifier value
 		d.setVerifierListener(new OnVerifyListener() {
-			@Override
+			@SuppressLint("NewApi")
 			public void onVerify(String verifier) {
 				try {
 					Log.i("LinkedinSample", "verifier: " + verifier);
@@ -172,13 +174,33 @@ public class LinkedInSampleActivity extends Activity {
 							"ln_access_token: " + accessToken.getToken());
 					Log.i("LinkedinSample",
 							"ln_access_token: " + accessToken.getTokenSecret());
-					Person p = client.getProfileForCurrentUser();
-					name.setText("Welcome " + p.getFirstName() + " "
-							+ p.getLastName());
-					name.setVisibility(0);
-					login.setVisibility(4);
-					share.setVisibility(0);
-					et.setVisibility(0);
+					//Person p = client.getProfileForCurrentUser();
+					Person p = 	client.getProfileForCurrentUser(EnumSet.of(
+							ProfileField.ID, ProfileField.FIRST_NAME,
+							ProfileField.PHONE_NUMBERS, ProfileField.LAST_NAME,
+							ProfileField.HEADLINE, ProfileField.INDUSTRY,
+							ProfileField.PICTURE_URL, ProfileField.DATE_OF_BIRTH,
+							ProfileField.LOCATION_NAME, ProfileField.MAIN_ADDRESS,
+								ProfileField.LOCATION_COUNTRY));
+					Log.e("create access token secret", client.getAccessToken()
+							.getTokenSecret());
+
+					if(p!=null) {
+						name.setText("Welcome " + p.getFirstName() + " "
+								+ p.getLastName());
+						name.setVisibility(0);
+						profile.setText("Profile:"+p.getHeadline());
+						profile.setVisibility(0);
+						String id = p.getId();
+						String url = p.getPictureUrl();
+						if(url != null && !url.isEmpty()) {
+							Picasso.with(LinkedInSampleActivity.this).load(url).into(photo);
+							photo.setVisibility(0);
+						}
+						login.setVisibility(4);
+						share.setVisibility(0);
+						et.setVisibility(0);
+					}
 
 				} catch (Exception e) {
 					Log.i("LinkedinSample", "error to get verifier");

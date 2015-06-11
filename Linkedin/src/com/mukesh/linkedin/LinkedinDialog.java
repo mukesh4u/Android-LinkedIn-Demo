@@ -76,7 +76,6 @@ public class LinkedinDialog extends Dialog {
 		mWebView.setWebViewClient(new HelloWebViewClient());
 
 		mWebView.setPictureListener(new PictureListener() {
-			@Override
 			public void onNewPicture(WebView view, Picture picture) {
 				if (progressDialog != null && progressDialog.isShowing()) {
 					progressDialog.dismiss();

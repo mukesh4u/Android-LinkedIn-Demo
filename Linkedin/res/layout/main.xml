@@ -49,15 +49,16 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="invisible" />
-
-    <Button
-        android:id="@+id/share"
+      <TextView
+        android:id="@+id/profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/et_share"
-        android:layout_marginTop="22dp"
-        android:background="@drawable/linkedin_share"
+        android:layout_below="@+id/name"
+        android:padding="15dp"
+        android:text="Profile heading"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:visibility="invisible" />
 
     <Button
@@ -85,18 +86,25 @@
         android:padding="5dp"
         android:visibility="invisible" />
 
+    <Button
+        android:id="@+id/share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/linkedin_share"
+        android:visibility="invisible" />
+
     <EditText
         android:id="@+id/et_share"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignBottom="@+id/login"
-        android:layout_alignParentRight="true"
+        android:layout_above="@+id/share"
+        android:layout_alignParentLeft="true"
         android:ems="10"
         android:gravity="top|center_vertical"
         android:hint="Enter Your Text to Share"
-        android:visibility="invisible" >
-
-        <requestFocus />
-    </EditText>
+        android:visibility="invisible" />
 
 </RelativeLayout>
